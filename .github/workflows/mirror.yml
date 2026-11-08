@@ -4,6 +4,8 @@ on:
   schedule:
     - cron: "17 * * * *"   # every hour, UTC
   workflow_dispatch:
+  push:
+    branches: [main]
 
 permissions:
   contents: write
@@ -25,11 +27,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release view latest >/dev/null 2>&1 || \
+          if ! gh release view latest >/dev/null 2>&1; then
             gh release create latest --title "Latest broadcast ephemeris" \
-              --notes "Updated hourly by GitHub Actions. Files: brdc-today.rnx.gz, brdc-yesterday.rnx.gz, manifest.json" 
-          ls out
+              --notes "Updated hourly by GitHub Actions. Files: brdc-today.rnx.gz, brdc-yesterday.rnx.gz, manifest.json"
+          fi
+          ls -la out
           gh release upload latest out/manifest.json --clobber
-          [ -s out/brdc-today.rnx.gz ] && gh release upload latest out/brdc-today.rnx.gz --clobber
-          [ -s out/brdc-yesterday.rnx.gz ] && gh release upload latest out/brdc-yesterday.rnx.gz --clobber
+          for f in brdc-today.rnx.gz brdc-yesterday.rnx.gz; do
+            if [ -s "out/$f" ]; then
+              gh release upload latest "out/$f" --clobber
+            else
+              echo "$f not available this run, keeping the previous asset if any"
+            fi
+          done
           echo "done"
