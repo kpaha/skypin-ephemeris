@@ -21,9 +21,19 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Download from IGS data centres
-        run: ./mirror.sh out
+        id: download
+        continue-on-error: true
+        run: |
+          mkdir -p out
+          set +e
+          ./mirror.sh out 2>&1 | tee out/log.txt
+          rc=${PIPESTATUS[0]}
+          echo "exit code $rc" | tee -a out/log.txt
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit $rc
 
       - name: Publish as the "latest" release assets
+        if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -32,7 +42,8 @@ jobs:
               --notes "Updated hourly by GitHub Actions. Files: brdc-today.rnx.gz, brdc-yesterday.rnx.gz, manifest.json"
           fi
           ls -la out
-          gh release upload latest out/manifest.json --clobber
+          gh release upload latest out/log.txt --clobber
+          if [ -s out/manifest.json ]; then gh release upload latest out/manifest.json --clobber; fi
           for f in brdc-today.rnx.gz brdc-yesterday.rnx.gz; do
             if [ -s "out/$f" ]; then
               gh release upload latest "out/$f" --clobber
@@ -41,3 +52,4 @@ jobs:
             fi
           done
           echo "done"
+          if [ "${{ steps.download.outputs.rc }}" != "0" ]; then echo "download step failed, see log.txt"; exit 1; fi
