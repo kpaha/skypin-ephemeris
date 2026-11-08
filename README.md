@@ -2,15 +2,15 @@
 
 Hourly GitHub Actions job that downloads the IGS daily broadcast ephemeris
 (RINEX 3 mixed navigation file, all constellations) from BKG and other IGS data
-centres and republishes it as assets of the GitHub release tagged `latest`.
+centres and republishes it as assets of the GitHub release tagged `current`.
 Needed because the IGS servers are unreachable from some networks while
 GitHub is.
 
 Download URLs (stable, no auth):
 
-- https://github.com/kpaha/skypin-ephemeris/releases/download/latest/brdc-today.rnx.gz
-- https://github.com/kpaha/skypin-ephemeris/releases/download/latest/brdc-yesterday.rnx.gz
-- https://github.com/kpaha/skypin-ephemeris/releases/download/latest/manifest.json
+- https://github.com/kpaha/skypin-ephemeris/releases/download/current/brdc-today.rnx.gz
+- https://github.com/kpaha/skypin-ephemeris/releases/download/current/brdc-yesterday.rnx.gz
+- https://github.com/kpaha/skypin-ephemeris/releases/download/current/manifest.json
 
 `manifest.json` says when the mirror last ran, which day numbers the files
 hold and where they came from.

@@ -32,21 +32,23 @@ jobs:
           echo "rc=$rc" >> "$GITHUB_OUTPUT"
           exit $rc
 
-      - name: Publish as the "latest" release assets
+      - name: Publish as the "current" release assets
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if ! gh release view latest >/dev/null 2>&1; then
-            gh release create latest --title "Latest broadcast ephemeris" \
+          # Tag "latest" is kept away from GitHub's own /releases/latest route (its download URLs answered 504).
+          gh release delete latest --yes --cleanup-tag >/dev/null 2>&1 || true
+          if ! gh release view current >/dev/null 2>&1; then
+            gh release create current --title "Current broadcast ephemeris" \
               --notes "Updated hourly by GitHub Actions. Files: brdc-today.rnx.gz, brdc-yesterday.rnx.gz, manifest.json"
           fi
           ls -la out
-          gh release upload latest out/log.txt --clobber
-          if [ -s out/manifest.json ]; then gh release upload latest out/manifest.json --clobber; fi
+          gh release upload current out/log.txt --clobber
+          if [ -s out/manifest.json ]; then gh release upload current out/manifest.json --clobber; fi
           for f in brdc-today.rnx.gz brdc-yesterday.rnx.gz; do
             if [ -s "out/$f" ]; then
-              gh release upload latest "out/$f" --clobber
+              gh release upload current "out/$f" --clobber
             else
               echo "$f not available this run, keeping the previous asset if any"
             fi
