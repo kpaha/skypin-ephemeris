@@ -23,9 +23,13 @@ fetch_day() {              # $1=yyyy $2=ddd $3=target file; returns 0 on success
   while read -r url; do
     [ -z "$url" ] && continue
     echo "  try $url"
-    if curl -fsSL --connect-timeout 15 --max-time 180 -o "$tmp" "$url" \
-       && gzip -t "$tmp" 2>/dev/null \
-       && gzip -dc "$tmp" | head -1 | grep -q "RINEX VERSION"; then
+    if curl -fsSL --connect-timeout 15 --max-time 180 -o "$tmp" "$url" && gzip -t "$tmp" 2>/dev/null; then
+      # head closes the pipe early; the "|| true" keeps pipefail from failing the test.
+      header=$(gzip -dc "$tmp" 2>/dev/null | head -1 || true)
+    else
+      header=""
+    fi
+    if [[ "$header" == *"RINEX VERSION"* ]]; then
       mv "$tmp" "$target"
       echo "  ok  $(stat -c %s "$target" 2>/dev/null || stat -f %z "$target") bytes <- $url"
       echo "$url" > "$target.source"
