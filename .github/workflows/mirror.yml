@@ -2,7 +2,11 @@ name: Mirror broadcast ephemeris
 
 on:
   schedule:
+    # GitHub runs scheduled workflows late or skips them under load (an 11-hour gap was seen on
+    # 2026-11-09). Several entries at odd minutes make a long gap much less likely; the script
+    # is idempotent, so extra runs only cost minutes.
     - cron: "17 * * * *"   # every hour, UTC
+    - cron: "41 * * * *"
   workflow_dispatch:
   push:
     branches: [main]
