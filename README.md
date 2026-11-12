@@ -22,3 +22,11 @@ workflow). The hourly schedule runs on its own after that.
 Local test: `./mirror.sh out` (needs curl and gzip).
 
 Data: IGS broadcast ephemeris, free to use; see https://igs.org/ for the data policy.
+
+## Cell towers
+
+`cells/` holds a second, weekly job (`.github/workflows/cells.yml`) that converts the OpenCelliD
+export into per-country cell files for offline positioning and publishes them under the release
+tag `cells`: https://github.com/kpaha/skypin-ephemeris/releases/download/cells/manifest.json.
+Needs the repository secret `OPENCELLID_KEY`. Details in `cells/README.md`; data OpenCelliD,
+CC BY-SA 4.0.

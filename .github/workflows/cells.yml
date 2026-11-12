@@ -1,0 +1,70 @@
+# Lives at .github/workflows/cells.yml of kpaha/skypin-ephemeris; the scripts are in cells/ there.
+name: Cell tower files (OpenCelliD)
+
+on:
+  schedule:
+    # Weekly, Monday UTC. Two entries at odd minutes because GitHub delays or skips scheduled runs
+    # under load; a second run on the same day only repeats the download.
+    - cron: "23 3 * * 1"
+    - cron: "47 9 * * 1"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["cells/**", ".github/workflows/cells.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cells
+  cancel-in-progress: false
+
+jobs:
+  cells:
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    defaults:
+      run:
+        working-directory: cells
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check the OpenCelliD key secret
+        env:
+          OPENCELLID_KEY: ${{ secrets.OPENCELLID_KEY }}
+        run: |
+          if [ -z "$OPENCELLID_KEY" ]; then
+            echo "::error::Repository secret OPENCELLID_KEY is missing. Add it under Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+
+      - name: Unit tests
+        run: python3 -m unittest -v test_convert
+
+      - name: Download and convert
+        id: build
+        continue-on-error: true
+        env:
+          OPENCELLID_KEY: ${{ secrets.OPENCELLID_KEY }}
+        run: |
+          mkdir -p out
+          df -h . | tail -1
+          set +e
+          ./cells.sh build out 2>&1 | tee out/log.txt
+          rc=${PIPESTATUS[0]}
+          df -h . | tail -1 | tee -a out/log.txt
+          echo "exit code $rc" | tee -a out/log.txt
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit $rc
+
+      - name: Publish as the "cells" release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_OK: ${{ steps.build.outputs.rc == '0' && '1' || '0' }}
+        run: |
+          ./cells.sh publish out
+          if [ "$BUILD_OK" != "1" ]; then echo "::error::download or conversion failed, see log.txt"; exit 1; fi
