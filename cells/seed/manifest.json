@@ -1,0 +1,518 @@
+{
+ "format": 1,
+ "generated": "2026-11-12",
+ "licence": "OpenCelliD, CC BY-SA 4.0",
+ "source": "https://opencellid.org",
+ "recordBytes": 18,
+ "tileDegrees": 10,
+ "cells": 99514,
+ "bytes": 1019749,
+ "stats": {
+  "rows": 111970,
+  "accepted": 99514,
+  "radio": 0,
+  "samples": 12456,
+  "range": 0,
+  "position": 0,
+  "key": 0,
+  "bad_row": 0,
+  "other_mcc": 0,
+  "duplicates": 0
+ },
+ "files": [
+  {
+   "name": "250-N40E030.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 40,
+    "lonMin": 30,
+    "latMax": 50,
+    "lonMax": 40
+   },
+   "bbox": {
+    "latMin": 40,
+    "lonMin": 30,
+    "latMax": 50,
+    "lonMax": 40
+   },
+   "count": 1243,
+   "bytes": 13448,
+   "sha256": "1f708403ca0867aeccd6dd3da6a3639f58d8f088fa0512502e4432b7217a0d37"
+  },
+  {
+   "name": "250-N40E040.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 40,
+    "lonMin": 40,
+    "latMax": 50,
+    "lonMax": 50
+   },
+   "bbox": {
+    "latMin": 40,
+    "lonMin": 40,
+    "latMax": 50,
+    "lonMax": 50
+   },
+   "count": 3323,
+   "bytes": 33645,
+   "sha256": "8c275d29210b113fe49796c6eab5619c123e35fbaeda29072f743ed8b707e429"
+  },
+  {
+   "name": "250-N40E130.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 40,
+    "lonMin": 130,
+    "latMax": 50,
+    "lonMax": 140
+   },
+   "bbox": {
+    "latMin": 40,
+    "lonMin": 130,
+    "latMax": 50,
+    "lonMax": 140
+   },
+   "count": 952,
+   "bytes": 9603,
+   "sha256": "997c29f8b39575d28bc76ace25968088a02a002f5613f946f7bd8b6dc0d2e5bd"
+  },
+  {
+   "name": "250-N50E010.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 50,
+    "lonMin": 10,
+    "latMax": 60,
+    "lonMax": 20
+   },
+   "bbox": {
+    "latMin": 50,
+    "lonMin": 10,
+    "latMax": 60,
+    "lonMax": 20
+   },
+   "count": 23,
+   "bytes": 347,
+   "sha256": "4b4057b10ff426b6222e53b6e729509ad080bcf54f65c9de1704eea5208457ef"
+  },
+  {
+   "name": "250-N50E020.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 50,
+    "lonMin": 20,
+    "latMax": 60,
+    "lonMax": 30
+   },
+   "bbox": {
+    "latMin": 50,
+    "lonMin": 20,
+    "latMax": 60,
+    "lonMax": 30
+   },
+   "count": 2690,
+   "bytes": 27947,
+   "sha256": "e4af2a0474bd9e60b78a3663eccc5da08f5979afa5dee2b79974820a1fc2c1c3"
+  },
+  {
+   "name": "250-N50E030.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 50,
+    "lonMin": 30,
+    "latMax": 60,
+    "lonMax": 40
+   },
+   "bbox": {
+    "latMin": 50,
+    "lonMin": 30,
+    "latMax": 60,
+    "lonMax": 40
+   },
+   "count": 54753,
+   "bytes": 560686,
+   "sha256": "fd032fee1d86df7c485fe228d4d91db5bca600e9289ba568fe47671c8611e0c5"
+  },
+  {
+   "name": "250-N50E040.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 50,
+    "lonMin": 40,
+    "latMax": 60,
+    "lonMax": 50
+   },
+   "bbox": {
+    "latMin": 50,
+    "lonMin": 40,
+    "latMax": 60,
+    "lonMax": 50
+   },
+   "count": 10468,
+   "bytes": 109628,
+   "sha256": "02cf9896fc5a396bd4a43cc8e616cda77a09fbed2fc932d22db15162a8e923aa"
+  },
+  {
+   "name": "250-N50E050.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 50,
+    "lonMin": 50,
+    "latMax": 60,
+    "lonMax": 60
+   },
+   "bbox": {
+    "latMin": 50,
+    "lonMin": 50,
+    "latMax": 60,
+    "lonMax": 60
+   },
+   "count": 4265,
+   "bytes": 46272,
+   "sha256": "5c4821fcdb6507527c78ac3bd4ab2731bf9f831ac1580f7ccada014b7a6133aa"
+  },
+  {
+   "name": "250-N50E060.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 50,
+    "lonMin": 60,
+    "latMax": 60,
+    "lonMax": 70
+   },
+   "bbox": {
+    "latMin": 50,
+    "lonMin": 60,
+    "latMax": 60,
+    "lonMax": 70
+   },
+   "count": 10057,
+   "bytes": 97882,
+   "sha256": "3ef533d9b00443fd7202adf2320769c8ea7c4a29314f1232a868d9a5ded338cb"
+  },
+  {
+   "name": "250-N50E070.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 50,
+    "lonMin": 70,
+    "latMax": 60,
+    "lonMax": 80
+   },
+   "bbox": {
+    "latMin": 50,
+    "lonMin": 70,
+    "latMax": 60,
+    "lonMax": 80
+   },
+   "count": 369,
+   "bytes": 3951,
+   "sha256": "529840b81cefb94e0ad80f561be470f4c028f023a9cb0d79c22392e85fb55afc"
+  },
+  {
+   "name": "250-N50E080.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 50,
+    "lonMin": 80,
+    "latMax": 60,
+    "lonMax": 90
+   },
+   "bbox": {
+    "latMin": 50,
+    "lonMin": 80,
+    "latMax": 60,
+    "lonMax": 90
+   },
+   "count": 2979,
+   "bytes": 29729,
+   "sha256": "c80f8beda3c60788d631b877e449c64099d6714f6e9782512241f4d282fe54aa"
+  },
+  {
+   "name": "250-N50E090.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 50,
+    "lonMin": 90,
+    "latMax": 60,
+    "lonMax": 100
+   },
+   "bbox": {
+    "latMin": 50,
+    "lonMin": 90,
+    "latMax": 60,
+    "lonMax": 100
+   },
+   "count": 4087,
+   "bytes": 40014,
+   "sha256": "26023cf89cade1064f97b03b7fc03cc13a87c08664e6ae149d2cd562c3f41802"
+  },
+  {
+   "name": "250-N50E100.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 50,
+    "lonMin": 100,
+    "latMax": 60,
+    "lonMax": 110
+   },
+   "bbox": {
+    "latMin": 50,
+    "lonMin": 100,
+    "latMax": 60,
+    "lonMax": 110
+   },
+   "count": 261,
+   "bytes": 2787,
+   "sha256": "1650735367f42a2bcac6bbda95b42091077c63cd137306b875c52c733128625f"
+  },
+  {
+   "name": "250-N50E110.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 50,
+    "lonMin": 110,
+    "latMax": 60,
+    "lonMax": 120
+   },
+   "bbox": {
+    "latMin": 50,
+    "lonMin": 110,
+    "latMax": 60,
+    "lonMax": 120
+   },
+   "count": 22,
+   "bytes": 321,
+   "sha256": "130a0e664afd6962ecea011e0cde95410d57ce3f573c4162334976b94839def2"
+  },
+  {
+   "name": "250-N50E120.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 50,
+    "lonMin": 120,
+    "latMax": 60,
+    "lonMax": 130
+   },
+   "bbox": {
+    "latMin": 50,
+    "lonMin": 120,
+    "latMax": 60,
+    "lonMax": 130
+   },
+   "count": 70,
+   "bytes": 833,
+   "sha256": "664fd26f8b9e030b543b157140af4072d53a75eac5807b9d4c27eb440e1d8a98"
+  },
+  {
+   "name": "250-N50E130.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 50,
+    "lonMin": 130,
+    "latMax": 60,
+    "lonMax": 140
+   },
+   "bbox": {
+    "latMin": 50,
+    "lonMin": 130,
+    "latMax": 60,
+    "lonMax": 140
+   },
+   "count": 2,
+   "bytes": 85,
+   "sha256": "319511026271af0c4906c7196b8383582a184ad7311421a4441d4b8b41c1c678"
+  },
+  {
+   "name": "250-N50E150.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 50,
+    "lonMin": 150,
+    "latMax": 60,
+    "lonMax": 160
+   },
+   "bbox": {
+    "latMin": 50,
+    "lonMin": 150,
+    "latMax": 60,
+    "lonMax": 160
+   },
+   "count": 49,
+   "bytes": 628,
+   "sha256": "fbcccc9d6b98c348ec5cedb542c7ead83d43ecc584fa0c9306c9aa45a7a3d474"
+  },
+  {
+   "name": "250-N60E020.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 60,
+    "lonMin": 20,
+    "latMax": 70,
+    "lonMax": 30
+   },
+   "bbox": {
+    "latMin": 60,
+    "lonMin": 20,
+    "latMax": 70,
+    "lonMax": 30
+   },
+   "count": 737,
+   "bytes": 7831,
+   "sha256": "a59f865cd92006afe1f8a33c2297f9a615a2bc71b8328959b2054ceee75a6d68"
+  },
+  {
+   "name": "250-N60E030.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 60,
+    "lonMin": 30,
+    "latMax": 70,
+    "lonMax": 40
+   },
+   "bbox": {
+    "latMin": 60,
+    "lonMin": 30,
+    "latMax": 70,
+    "lonMax": 40
+   },
+   "count": 2816,
+   "bytes": 30135,
+   "sha256": "709c29b120f82f50c4fcb8922c8e522b5e118ed89bc25579f128d171dc864325"
+  },
+  {
+   "name": "250-N60E040.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 60,
+    "lonMin": 40,
+    "latMax": 70,
+    "lonMax": 50
+   },
+   "bbox": {
+    "latMin": 60,
+    "lonMin": 40,
+    "latMax": 70,
+    "lonMax": 50
+   },
+   "count": 61,
+   "bytes": 740,
+   "sha256": "ccf1e525a3de01e8aa550473aa4817e438986b235f55752996da36fe16d4a279"
+  },
+  {
+   "name": "250-N60E050.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 60,
+    "lonMin": 50,
+    "latMax": 70,
+    "lonMax": 60
+   },
+   "bbox": {
+    "latMin": 60,
+    "lonMin": 50,
+    "latMax": 70,
+    "lonMax": 60
+   },
+   "count": 69,
+   "bytes": 753,
+   "sha256": "501422de1cdf67c295f6b4fdeb3b99b5f596814a4d7d57729d6589b08fa1fd4d"
+  },
+  {
+   "name": "250-N60E070.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 60,
+    "lonMin": 70,
+    "latMax": 70,
+    "lonMax": 80
+   },
+   "bbox": {
+    "latMin": 60,
+    "lonMin": 70,
+    "latMax": 70,
+    "lonMax": 80
+   },
+   "count": 10,
+   "bytes": 178,
+   "sha256": "188817070ed97efd9d8b0ef790ca54215cdf4c9220600f9db073e2bea88ae0c2"
+  },
+  {
+   "name": "250-N60E080.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 60,
+    "lonMin": 80,
+    "latMax": 70,
+    "lonMax": 90
+   },
+   "bbox": {
+    "latMin": 60,
+    "lonMin": 80,
+    "latMax": 70,
+    "lonMax": 90
+   },
+   "count": 5,
+   "bytes": 112,
+   "sha256": "d30626813c59f5539eaa3430a0138876e63fd8b017404790d7b0be32fd21a5ec"
+  },
+  {
+   "name": "250-N60E090.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 60,
+    "lonMin": 90,
+    "latMax": 70,
+    "lonMax": 100
+   },
+   "bbox": {
+    "latMin": 60,
+    "lonMin": 90,
+    "latMax": 70,
+    "lonMax": 100
+   },
+   "count": 22,
+   "bytes": 339,
+   "sha256": "2110d09fa6abf285101f2972d2de9aad785ea0fc1dbcaa349f8cb1eb39080c23"
+  },
+  {
+   "name": "250-N60E110.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 60,
+    "lonMin": 110,
+    "latMax": 70,
+    "lonMax": 120
+   },
+   "bbox": {
+    "latMin": 60,
+    "lonMin": 110,
+    "latMax": 70,
+    "lonMax": 120
+   },
+   "count": 7,
+   "bytes": 156,
+   "sha256": "2818a7ef178ff45aadc24f1995e19514c6ea4e553c9711b5d420384768e08c2a"
+  },
+  {
+   "name": "250-N60E120.bin.gz",
+   "mcc": 250,
+   "tile": {
+    "latMin": 60,
+    "lonMin": 120,
+    "latMax": 70,
+    "lonMax": 130
+   },
+   "bbox": {
+    "latMin": 60,
+    "lonMin": 120,
+    "latMax": 70,
+    "lonMax": 130
+   },
+   "count": 174,
+   "bytes": 1699,
+   "sha256": "68ea4562ffe7d97ad5ab0eb51bcc2107123ebc97cd3b6b4270fe35e1d6720341"
+  }
+ ]
+}

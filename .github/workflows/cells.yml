@@ -34,18 +34,38 @@ jobs:
           python-version: "3.12"
 
       - name: Check the OpenCelliD key secret
+        id: key
         env:
           OPENCELLID_KEY: ${{ secrets.OPENCELLID_KEY }}
         run: |
           if [ -z "$OPENCELLID_KEY" ]; then
-            echo "::error::Repository secret OPENCELLID_KEY is missing. Add it under Settings > Secrets and variables > Actions."
-            exit 1
+            echo "::warning::Repository secret OPENCELLID_KEY is missing (Settings > Secrets and variables > Actions): publishing the committed seed files from cells/seed instead of a fresh export."
+            echo "present=0" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=1" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Without the key: the files converted by hand and committed under cells/seed (a partial export)
+      # become the release, so the app has something to download. A keyed run replaces them.
+      - name: Publish the seed files
+        if: steps.key.outputs.present == '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view cells --json assets -q '.assets[].name' 2>/dev/null | grep -qx manifest.json \
+             && [ "$(gh release view cells --json body -q .body | grep -c 'seed')" = "0" ]; then
+            echo "a full export is already published: keeping it"
+          else
+            ./cells.sh publish seed
+            gh release edit cells --notes "$(gh release view cells --json body -q .body | grep -v '^Partial seed' ; echo; echo 'Partial seed export (Russia only) until the weekly job has its key.')"
           fi
 
       - name: Unit tests
+        if: steps.key.outputs.present == '1'
         run: python3 -m unittest -v test_convert
 
       - name: Download and convert
+        if: steps.key.outputs.present == '1'
         id: build
         continue-on-error: true
         env:
@@ -62,6 +82,7 @@ jobs:
           exit $rc
 
       - name: Publish as the "cells" release assets
+        if: steps.key.outputs.present == '1'
         env:
           GH_TOKEN: ${{ github.token }}
           BUILD_OK: ${{ steps.build.outputs.rc == '0' && '1' || '0' }}
