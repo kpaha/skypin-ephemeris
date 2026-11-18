@@ -2,11 +2,18 @@ name: Mirror broadcast ephemeris
 
 on:
   schedule:
-    # GitHub runs scheduled workflows late or skips them under load (an 11-hour gap was seen on
-    # 2026-11-09). Several entries at odd minutes make a long gap much less likely; the script
-    # is idempotent, so extra runs only cost minutes.
-    - cron: "17 * * * *"   # every hour, UTC
-    - cron: "41 * * * *"
+    # GitHub's documentation: scheduled runs "can be delayed during periods of high loads",
+    # "high load times include the start of every hour", and under enough load "some queued jobs
+    # may be dropped"; it advises running at a different time of the hour. Seen here: an 11-hour
+    # gap on 2026-11-09 and about 6 runs in 24 hours on 2026-11-17. Four entries an hour at odd
+    # minutes, away from :00/:15/:30/:45; the script is idempotent, so extra runs only cost minutes.
+    # Scheduled workflows of a public repository are disabled after 60 days without repository
+    # activity; the owner's server trigger (server/trigger-mirror.sh, workflow_dispatch) is the
+    # second way to start this workflow and is not affected by that.
+    - cron: "7 * * * *"
+    - cron: "23 * * * *"
+    - cron: "38 * * * *"
+    - cron: "53 * * * *"
   workflow_dispatch:
   push:
     branches: [main]
@@ -21,12 +28,28 @@ concurrency:
 jobs:
   mirror:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download from IGS data centres
+      - name: Read what the release holds now
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # The manifest describes the assets this run does not replace from these two files.
+          mkdir -p prev
+          gh release view current --json assets > prev/assets.json 2>/dev/null || rm -f prev/assets.json
+          gh release download current --pattern manifest.json --dir prev --clobber 2>/dev/null || true
+          ls -la prev
+
+      - name: Download broadcast ephemeris
         id: download
         continue-on-error: true
+        env:
+          PREV_DIR: prev
+          # Optional (CDDIS HTTPS route, used only when CDDIS's anonymous FTP-SSL route fails).
+          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
         run: |
           mkdir -p out
           set +e
@@ -40,22 +63,26 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
+          RC: ${{ steps.download.outputs.rc }}
         run: |
           # Tag "latest" is kept away from GitHub's own /releases/latest route (its download URLs answered 504).
           gh release delete latest --yes --cleanup-tag >/dev/null 2>&1 || true
           if ! gh release view current >/dev/null 2>&1; then
             gh release create current --title "Current broadcast ephemeris" \
-              --notes "Updated hourly by GitHub Actions. Files: brdc-today.rnx.gz, brdc-yesterday.rnx.gz, manifest.json"
+              --notes "Updated by GitHub Actions. Files: brdc-today.rnx.gz, brdc-yesterday.rnx.gz (RINEX 3 multi-GNSS), noaa-{gps,glo}-{today,yesterday}.rnx.gz (NOAA CORS, RINEX 2.11), manifest.json, log.txt"
           fi
           ls -la out
-          gh release upload current out/log.txt --clobber
-          if [ -s out/manifest.json ]; then gh release upload current out/manifest.json --clobber; fi
-          for f in brdc-today.rnx.gz brdc-yesterday.rnx.gz; do
+          # Only files the script verified this run are uploaded; a published asset is never
+          # replaced by nothing. Data files first, the manifest that describes them after.
+          for f in brdc-today.rnx.gz brdc-yesterday.rnx.gz \
+                   noaa-gps-today.rnx.gz noaa-gps-yesterday.rnx.gz noaa-glo-today.rnx.gz noaa-glo-yesterday.rnx.gz; do
             if [ -s "out/$f" ]; then
               gh release upload current "out/$f" --clobber
             else
-              echo "$f not available this run, keeping the previous asset if any"
+              echo "$f not refreshed this run, keeping the previous asset if any"
             fi
           done
+          if [ -s out/manifest.json ]; then gh release upload current out/manifest.json --clobber; fi
+          if [ -s out/log.txt ]; then gh release upload current out/log.txt --clobber; fi
           echo "done"
-          if [ "${{ steps.download.outputs.rc }}" != "0" ]; then echo "download step failed, see log.txt"; exit 1; fi
+          if [ "$RC" != "0" ]; then echo "download step failed (main chain delivered nothing), see log.txt"; exit 1; fi
