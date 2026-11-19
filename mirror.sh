@@ -4,7 +4,8 @@
 #
 # Main chain (the files brdc-today.rnx.gz / brdc-yesterday.rnx.gz, RINEX 3 multi-GNSS): the
 # sources below in order, first valid file wins; NASA CDDIS comes last. The run fails (exit 1)
-# only when no source of the main chain delivered anything for today or yesterday.
+# only when no source of the main chain delivered anything for today or yesterday AND the release
+# holds no multi-GNSS file whose newest data is under MAX_HELD_AGE_HOURS old (default 6).
 # NOAA CORS (noaa-{gps,glo}-{today,yesterday}.rnx.gz, RINEX 2.11 GPS / GLONASS): fetched on
 # every run in addition; its failures are logged and never change the exit status.
 #
@@ -23,6 +24,7 @@
 # Runs on Linux (GitHub runner) and macOS (bash 3.2, BSD date/stat). Needs curl, gzip, awk, jq.
 set -euo pipefail
 OUT="${1:-out}"
+MAX_HELD_AGE_HOURS="${MAX_HELD_AGE_HOURS:-6}"
 mkdir -p "$OUT"
 command -v jq >/dev/null || { echo "jq is required"; exit 2; }
 
@@ -266,5 +268,18 @@ cat "$OUT/manifest.json"
 
 if [ "$main_ok" != true ]; then
   echo "nothing downloaded by the main chain (published brdc assets, if any, stay as they were)"
+  # Not a failure while the release still holds a recent multi-GNSS file: in the first hours of a UTC day no
+  # source has today's merged file yet and CDDIS has not published yesterday's, which is normal. Age = now minus
+  # the newest epoch in the held file (else the time it was fetched).
+  held_age_h=$(jq -r --arg now "$now" '
+    [.today, .yesterday] | map(select(.available == true))
+    | map(if .newestEpoch then (.newestEpoch | sub("Z$"; "") | . + "Z" | fromdateiso8601)
+          elif .fetchedUtc then (.fetchedUtc | fromdateiso8601) else empty end)
+    | if length == 0 then "none" else ((($now | fromdateiso8601) - max) / 3600 | floor) end' "$OUT/manifest.json" 2>/dev/null || echo none)
+  if [ "$held_age_h" != none ] && [ "$held_age_h" -lt "$MAX_HELD_AGE_HOURS" ]; then
+    echo "the release still holds a multi-GNSS file with data ${held_age_h} h old (limit ${MAX_HELD_AGE_HOURS} h): not an error"
+    exit 0
+  fi
+  echo "held multi-GNSS data: ${held_age_h} h old (limit ${MAX_HELD_AGE_HOURS} h)"
   exit 1
 fi

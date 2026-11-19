@@ -28,7 +28,10 @@ Download URLs (stable, no auth), all under
    (`https://cddis.nasa.gov/archive/gnss/data/daily/YYYY/brdc/`). CDDIS publishes these merged
    multi-GNSS files only for finished days, so in practice it backs up "yesterday".
 
-The run fails only when no source of the main chain delivered a file, for today or for yesterday.
+The run fails only when no source of the main chain delivered a file, for today or for yesterday,
+and the release holds no multi-GNSS file whose newest data is under 6 hours old (`MAX_HELD_AGE_HOURS`).
+So the first hours of a UTC day, before any source has the new day's merged file and before CDDIS
+publishes the finished one, are not reported as failures while the held file is still recent.
 A host that cannot be reached is not tried again within the same run.
 
 **NOAA** (`noaa-*`), fetched on every run in addition, from the public bucket
